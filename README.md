@@ -1,12 +1,12 @@
 # Parsing JSON Using Jackson
 
-This recipe shows how to use [Jackson][] to parse a JSON response from a server.
+This recipe shows how to use [Jackson][jackson] to parse a JSON response from a server.
 
 ## Add dependencies
 
 The first step in using Jackson is to import the libraries from Maven Central.
 
-I'm using [OkHttp][] for networking, so include that too if you want to follow this tutorial exactly.
+I'm using [OkHttp][okhttp] for networking, so include that too if you want to follow this tutorial exactly.
 
 ```
 //Jackson libraries for JSON parsing
@@ -22,9 +22,12 @@ compile 'com.squareup.okhttp:okhttp:2.3.0'
 
 From whichever class requires the data, make an asynchronous request to the Data Manager class, in this case `UserManager`:
 
-```UserManager.getInstance().requestUsers(this);```
+```
+UserManager.getInstance().requestUsers(this);
+```
 
 The parameter `this` is a `UserManagerListener`, used for receiving callbacks when the data is loaded. This is a pretty common pattern in Android, even referenced in [Google's own tutorials][callbacks]. It lets you make the request asynchronously, meaning you can get on with other things while the data loads. Here's the interface:
+
 ```
 /**
  * Interface to be implemented by any class that requests data from the UserManager.
@@ -40,6 +43,7 @@ public interface UserManagerListener {
 ```
 
 And this is my implementation in the `MainActivity` class:
+
 ```
 @Override
 public void onUserDataLoaded(List<User> userList) {
@@ -50,6 +54,7 @@ public void onUserDataLoaded(List<User> userList) {
 ## Data Manager class
 
 If you've used OkHttp before, the `requestUsers` method should be really easy to understand. Thankfully, even if you've not used OkHttp before, it should be easy to understand as it's a really clear API. The interesting part in this tutorial is here:
+
 ```
 List<User> userList = UserDataParser.parseUsersJson(responseString);
 listener.onUserDataLoaded(userList);
@@ -61,17 +66,21 @@ The first line sends the String version of the JSON response to the UserDataPars
 
 This is the key part of this example project: how to parse the JSON data using Jackson.
 
-The main class used from Jackson is the [JsonParser][]. Creating the `JsonParser` is very straightforward, just pass the String of JSON data into the `createParser` method of `JsonFactory`.
+The main class used from Jackson is the [JsonParser][jsonparser]. Creating the `JsonParser` is very straightforward, just pass the String of JSON data into the `createParser` method of `JsonFactory`.
 
-```JsonParser parser = new JsonFactory().createParser(jsonString);```
+```
+JsonParser parser = new JsonFactory().createParser(jsonString);
+```
 
-The parser works by breaking the JSON down into [JsonTokens][]. This represents key elements like the start or end of an array or object, fields, and values. The approach taken here is to iterate over the tokens, until we reach the end:
+The parser works by breaking the JSON down into [JsonTokens][jsontokens]. This represents key elements like the start or end of an array or object, fields, and values. The approach taken here is to iterate over the tokens, until we reach the end:
+
 ```
 while (parser.nextToken() != JsonToken.END_ARRAY) {
     User parsedUser = parseUserJson(parser);
     userList.add(parsedUser);
 }
 ```
+
 In this case, I'm parsing an array of user objects, so the last token I should receive is an `END_ARRAY` token.
 
 There is a sub-loop in the `parseUserJson` method which iterates over each token in the `user` object. This is where I look at the keys and values in the JSON. `parser.getCurrentName();` will get the name of the field it's currently pointing at. The parser then moves on to the next token, the value. Using a switch statement to define each of the keys we're interested in, the value can then be passed into a User model object. And if the key isn't one that we're interested in, we can tell the parser to skip all children of this key and move on to the next key. This means we don't have to waste time or resources on every field that we're not interested in.
@@ -94,8 +103,8 @@ while (parser.nextToken() != JsonToken.END_OBJECT) {
 
 And that's it! We now have a fully parsed model object, built from the JSON that was received from the server.
 
-[Jackson]: https://github.com/FasterXML/jackson "GitHub: FasterXML/jackson"
-[OkHttp]: http://square.github.io/okhttp/ "OkHttp"
+[jackson]: https://github.com/FasterXML/jackson "GitHub: FasterXML/jackson"
+[okhttp]: http://square.github.io/okhttp/ "OkHttp"
 [callbacks]: http://developer.android.com/training/basics/fragments/communicating.html "Communicating with Other Fragments"
-[JsonParser]: https://github.com/FasterXML/jackson-core/blob/master/src/main/java/com/fasterxml/jackson/core/JsonParser.java "JsonParser.java"
-[JsonTokens]: https://github.com/FasterXML/jackson-core/blob/master/src/main/java/com/fasterxml/jackson/core/JsonToken.java "JsonToken.java"
+[jsonparser]: https://github.com/FasterXML/jackson-core/blob/master/src/main/java/com/fasterxml/jackson/core/JsonParser.java "JsonParser.java"
+[jsontokens]: https://github.com/FasterXML/jackson-core/blob/master/src/main/java/com/fasterxml/jackson/core/JsonToken.java "JsonToken.java"
