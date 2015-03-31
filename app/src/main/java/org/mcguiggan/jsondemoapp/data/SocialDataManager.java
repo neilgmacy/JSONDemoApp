@@ -47,7 +47,7 @@ public class SocialDataManager {
      *
      * @param listener To receive the loaded data object.
      */
-    public void requestData(final SocialDataManagerListener listener) {
+    public void requestUserList(final SocialDataManagerListener listener) {
         //Create your client.
         OkHttpClient client = new OkHttpClient();
 
@@ -76,7 +76,7 @@ public class SocialDataManager {
                     String responseString = response.body().string();
                     Log.d(TAG, responseString);
                     List<User> userList = SocialDataParser.parseUsersJson(responseString);
-                    listener.onDataLoaded(userList);
+                    listener.onUserDataLoaded(userList);
                 }
             }
         });
@@ -92,6 +92,6 @@ public class SocialDataManager {
          *
          * @param userList The list of users that has been loaded.
          */
-        void onDataLoaded(List<User> userList);
+        void onUserDataLoaded(List<User> userList);
     }
 }
