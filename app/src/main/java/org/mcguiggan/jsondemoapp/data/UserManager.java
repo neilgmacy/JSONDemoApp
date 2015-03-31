@@ -18,25 +18,25 @@ import java.util.List;
  * This only requests data from the server, but could easily be extended to manage a local
  * in-memory and/or disk-based cache as well.
  */
-public class SocialDataManager {
+public class UserManager {
 
-    private static final String TAG = SocialDataManager.class.getSimpleName();
+    private static final String TAG = UserManager.class.getSimpleName();
 
-    private static SocialDataManager sInstance; //Singleton instance
+    private static UserManager sInstance; //Singleton instance
 
-    private SocialDataManager() {
-        //This default constructor is hidden, use getInstance() to instantiate the singleton SocialDataManager.
+    private UserManager() {
+        //This default constructor is hidden, use getInstance() to instantiate the singleton UserManager.
     }
 
     /**
-     * This method is used to access the Singleton instance of the SocialDataManager class,
+     * This method is used to access the Singleton instance of the UserManager class,
      * and also creates it if necessary.
      *
-     * @return the Singleton instance of the SocialDataManager class.
+     * @return the Singleton instance of the UserManager class.
      */
-    public static SocialDataManager getInstance() {
+    public static UserManager getInstance() {
         if (sInstance == null) {
-            sInstance = new SocialDataManager();
+            sInstance = new UserManager();
         }
 
         return sInstance;
@@ -47,7 +47,7 @@ public class SocialDataManager {
      *
      * @param listener To receive the loaded data object.
      */
-    public void requestUserList(final SocialDataManagerListener listener) {
+    public void requestUsers(final UserManagerListener listener) {
         //Create your client.
         OkHttpClient client = new OkHttpClient();
 
@@ -75,7 +75,7 @@ public class SocialDataManager {
                     Log.d(TAG, "Loaded from server");
                     String responseString = response.body().string();
                     Log.d(TAG, responseString);
-                    List<User> userList = SocialDataParser.parseUsersJson(responseString);
+                    List<User> userList = UserDataParser.parseUsersJson(responseString);
                     listener.onUserDataLoaded(userList);
                 }
             }
@@ -83,9 +83,9 @@ public class SocialDataManager {
     }
 
     /**
-     * Interface to be implemented by any class that requests data from the SocialDataManager.
+     * Interface to be implemented by any class that requests data from the UserManager.
      */
-    public interface SocialDataManagerListener {
+    public interface UserManagerListener {
 
         /**
          * Callback for when the social data has been fetched.

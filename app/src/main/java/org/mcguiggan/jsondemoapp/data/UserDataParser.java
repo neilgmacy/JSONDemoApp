@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Parses JSON containing users into a UserList object.
  */
-public class SocialDataParser {
+public class UserDataParser {
 
     /**
      * Parse the given string of JSON into a List of User objects.
