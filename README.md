@@ -1,6 +1,6 @@
-# Parsing JSON Using Jackson
+# Parsing JSON in Android Using Jackson
 
-This recipe shows how to use [Jackson][jackson] to parse a JSON response from a server.
+This recipe shows how to use [Jackson][jackson] in an Android app to parse a JSON response from a server.
 
 ## Add dependencies
 
