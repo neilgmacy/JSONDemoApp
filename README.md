@@ -4,15 +4,13 @@ This recipe shows how to use [Jackson][jackson] in an Android app to parse a JSO
 
 ## Add dependencies
 
-The first step in using Jackson is to import the libraries from Maven Central.
+The first step in using Jackson is to import the libraries from Maven Central. I'm just using the [core][jackson-core] library here as there's nothing especially complicated involved, but the other main ones are the [databind][jackson-databind] library for binding JSON to Java objects, and the [annotations][jackson-annotations] library containing the core annotations for Jackson.
 
 I'm using [OkHttp][okhttp] for networking, so include that too if you want to follow this tutorial exactly.
 
 ```
 //Jackson libraries for JSON parsing
 compile 'com.fasterxml.jackson.core:jackson-core:2.5.1'
-compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
-compile 'com.fasterxml.jackson.core:jackson-annotations:2.5.1'
 
 //okhttp client for network requests
 compile 'com.squareup.okhttp:okhttp:2.3.0'
@@ -104,6 +102,9 @@ while (parser.nextToken() != JsonToken.END_OBJECT) {
 And that's it! We now have a fully parsed model object, built from the JSON that was received from the server.
 
 [jackson]: https://github.com/FasterXML/jackson "GitHub: FasterXML/jackson"
+[jackson-core]: https://github.com/FasterXML/jackson-core "GitHub: FasterXML/jackson-core"
+[jackson-databind]: https://github.com/FasterXML/jackson-databind "GitHub: FasterXML/jackson-databind"
+[jackson-annotations]: https://github.com/FasterXML/jackson-annotations "GitHub: FasterXML/jackson-annotations"
 [okhttp]: http://square.github.io/okhttp/ "OkHttp"
 [callbacks]: http://developer.android.com/training/basics/fragments/communicating.html "Communicating with Other Fragments"
 [jsonparser]: https://github.com/FasterXML/jackson-core/blob/master/src/main/java/com/fasterxml/jackson/core/JsonParser.java "JsonParser.java"
