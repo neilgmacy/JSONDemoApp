@@ -5,11 +5,13 @@ android:
     - build-tools-22.0.1
     - android-22
 
-jdk:
-  - oraclejdk7
-  - oraclejdk8
-
 notifications:
   email: false
+
+before_install:
+  - ./gradlew -v
+
+script:
+  - ./gradlew clean assembleDebug
 
 sudo: false
