@@ -2,6 +2,8 @@
 
 This recipe shows how to use [Jackson][jackson] in an Android app to parse a JSON response from a server.
 
+[![Build Status](https://img.shields.io/travis/neilmcguiggan/JSONDemoApp.svg)](https://travis-ci.org/neilmcguiggan/JSONDemoApp)
+
 ## Add dependencies
 
 The first step in using Jackson is to import the libraries from Maven Central. I'm just using the [core][jackson-core] library here as there's nothing especially complicated involved, but the other main ones are the [databind][jackson-databind] library for binding JSON to Java objects, and the [annotations][jackson-annotations] library containing the core annotations for Jackson.
